@@ -10,7 +10,7 @@ using SkillTrackerLambda.Services;
 namespace SkillTrackerLambda.Controllers
 {
     [ApiController]
-    [Route("skill-tracker/api/[controller]")]
+    [Route("/api/profiles/[controller]")]
     public class EngineerController : ControllerBase
     {
         private readonly IProfileService _profileService;
