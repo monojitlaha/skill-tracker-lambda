@@ -2,16 +2,43 @@
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SkillTrackerLambda.DTO;
+using SkillTrackerLambda.Repository;
 
 namespace SkillTrackerLambda.Services
 {
-    public class ProfileService //: IProfileService
+    public class ProfileService : IProfileService
     {
-        //private readonly IMongoCollection<Profile> _profiles;
+        private readonly IProfileRepository _profileRepository;
 
-        //public ProfileService()
-        //{
-        //}
+        public ProfileService(IProfileRepository profileRepository)
+        {
+            _profileRepository = profileRepository;
+        }
+
+        public Task CreateAsync(Profile profile)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<List<Profile>> GetAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<List<Profile>> GetAsync(string criteria, string criteriaValue)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task RemoveAsync(string id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task UpdateAsync(string id, Profile profile)
+        {
+            throw new System.NotImplementedException();
+        }
 
         //public async Task<List<Profile>> GetAsync() =>
         // await _profiles.Find(Builders<Profile>.Filter.Empty, null).ToListAsync();

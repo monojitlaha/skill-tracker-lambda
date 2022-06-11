@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using SkillTrackerLambda.Services;
+using SkillTrackerLambda.Repository;
 
 namespace SkillTrackerLambda
 {
@@ -28,7 +30,10 @@ namespace SkillTrackerLambda
             {
                 builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
             }));
-            
+
+            services.AddSingleton<IProfileRepository, ProfileRepository>();
+            services.AddSingleton<IProfileService, ProfileService>();
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
