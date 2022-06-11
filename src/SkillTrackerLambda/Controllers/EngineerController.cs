@@ -16,10 +16,10 @@ namespace SkillTrackerLambda.Controllers
         private readonly IProfileService _profileService;
         private readonly ILogger<EngineerController> _logger;
 
-        public EngineerController(ILogger<EngineerController> logger)
+        public EngineerController(ILogger<EngineerController> logger, IProfileService profileService)
         {
             _logger = logger;
-            //_profileService = profileService;
+            _profileService = profileService;
         }
 
         [HttpPost]
@@ -59,15 +59,15 @@ namespace SkillTrackerLambda.Controllers
             try
             {
                 _logger.LogInformation("Invoking update-profile method");
-                var book = await _profileService.GetAsync("Id", id);
+                var profile = await _profileService.GetAsync("Id", id);
 
-                if (book is null || !book.Any())
+                if (profile is null || !profile.Any())
                 {
                     _logger.LogInformation("Profile Information not found");
                     return NotFound();
                 }
 
-                newProfile.Id = book.FirstOrDefault().Id;
+                newProfile.Id = profile.FirstOrDefault().Id;
 
                 await _profileService.UpdateAsync(id, newProfile);
                 _logger.LogInformation("Updated Profile Successfully");
