@@ -31,18 +31,8 @@ namespace SkillTrackerLambda
                 builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
             }));
 
-            services.AddSingleton<IDynamoDBClient, ProfileRepository>();
+            services.AddSingleton<IDynamoDBClient, DynamoDBClient>();
             services.AddSingleton<IProfileService, ProfileService>();
-
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
-                {
-                    Title = "Skill Tracker Service API",
-                    Version = "v2",
-                    Description = "Skill Tracker Service",
-                });
-            });
 
             services.AddHttpContextAccessor();
             services.AddMvcCore(options => options.EnableEndpointRouting = false);
@@ -60,9 +50,6 @@ namespace SkillTrackerLambda
             {
                 app.UseHsts();
             }
-            
-            app.UseSwagger();
-            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v2/swagger.json", "PlaceInfo Services"));
 
             app.UseHttpsRedirection();
             app.UseMvc();

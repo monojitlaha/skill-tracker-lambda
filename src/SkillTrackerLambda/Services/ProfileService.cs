@@ -8,11 +8,11 @@ namespace SkillTrackerLambda.Services
 {
     public class ProfileService : IProfileService
     {
-        private readonly IDynamoDBClient _profileRepository;
+        private readonly IDynamoDBClient _dynamoDBClient;
 
-        public ProfileService(IDynamoDBClient profileRepository)
+        public ProfileService(IDynamoDBClient dynamoDBClient)
         {
-            _profileRepository = profileRepository;
+            _dynamoDBClient = dynamoDBClient;
         }
 
         public Task CreateAsync(Profile profile)
