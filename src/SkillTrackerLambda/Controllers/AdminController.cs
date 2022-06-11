@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using SkillTrackerLambda.Models;
+using SkillTrackerLambda.Services;
 
 namespace SkillTrackerLambda.Controllers
 {
@@ -12,14 +14,13 @@ namespace SkillTrackerLambda.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        //private readonly IProfileService _profileService;
+        private readonly IProfileService _profileService;
         private readonly ILogger<AdminController> _logger;
-       // private readonly IMemoryCache _memoryCache;
 
-        public AdminController(ILogger<AdminController> logger)
+        public AdminController(ILogger<AdminController> logger, IProfileService profileService)
         {
             _logger = logger;
-            //_profileService = profileService;
+            _profileService = profileService;
         }
 
         [HttpGet]
@@ -28,8 +29,7 @@ namespace SkillTrackerLambda.Controllers
             try
             {
                 _logger.LogInformation("Invoking GET method");
-                //var result = await _profileService.GetAsync();
-                var result = "Hello World From AdminController";
+                var result = await _profileService.GetAsync();
                 if (result == null || !result.Any())
                     return NotFound();
                 _logger.LogInformation("Receieved Search Result Successfully");
@@ -42,42 +42,36 @@ namespace SkillTrackerLambda.Controllers
             }
         }
 
-        //[HttpGet("{criteria}/{criteriaValue}")]
-        //public async Task<ActionResult<List<Profile>>> Get(string criteria, string criteriaValue)
-        //{
-        //    if (string.IsNullOrWhiteSpace(criteria) || string.IsNullOrWhiteSpace(criteriaValue))
-        //    {
-        //        _logger.LogInformation("AdminController Index executed at {date}", DateTime.UtcNow);
-        //        _logger.LogInformation("Input Parameter is not valid");
-        //        return BadRequest();
-        //    }
+        [HttpGet("{criteria}/{criteriaValue}")]
+        public async Task<ActionResult<List<Profile>>> Get(string criteria, string criteriaValue)
+        {
+            if (string.IsNullOrWhiteSpace(criteria) || string.IsNullOrWhiteSpace(criteriaValue))
+            {
+                _logger.LogInformation("AdminController Index executed at {date}", DateTime.UtcNow);
+                _logger.LogInformation("Input Parameter is not valid");
+                return BadRequest();
+            }
 
-        //    try
-        //    {
-        //        _logger.LogInformation("Invoking GET method by passing Search Criteria");
-        //        var cacheKey = $"{criteria.ToLower()}_{criteriaValue.ToLower()}";
-        //        if (!_memoryCache.TryGetValue(cacheKey, out List<Profile> profiles))
-        //        {
-        //            profiles = await _profileService.GetAsync(criteria, criteriaValue);
-        //            var cacheExpirationOptions = new MemoryCacheEntryOptions
-        //            {
-        //                AbsoluteExpiration = DateTime.Now.AddHours(6),
-        //                Priority = CacheItemPriority.Normal,
-        //                SlidingExpiration = TimeSpan.FromMinutes(5)
-        //            };
-        //            if (profiles != null && profiles.Any())
-        //                _memoryCache.Set(cacheKey, profiles, cacheExpirationOptions);
-        //        }
+            try
+            {
+                _logger.LogInformation("Invoking GET method by passing Search Criteria");
+                var profiles = await _profileService.GetAsync(criteria, criteriaValue);
+                var cacheExpirationOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddHours(6),
+                    Priority = CacheItemPriority.Normal,
+                    SlidingExpiration = TimeSpan.FromMinutes(5)
+                };
 
-        //        _logger.LogInformation("Receieved Search Result Successfully");
+                _logger.LogInformation("Receieved Search Result Successfully");
 
-        //        return Ok(profiles);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Error in get-profile-by-criteria:{ex.Message}");
-        //        return StatusCode(500);
-        //    }
-        //}
+                return Ok(profiles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error in get-profile-by-criteria:{ex.Message}");
+                return StatusCode(500);
+            }
+        }
     }
 }
