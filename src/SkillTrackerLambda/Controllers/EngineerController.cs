@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SkillTrackerLambda.DTO;
 using SkillTrackerLambda.Models;
 using SkillTrackerLambda.Services;
 
@@ -59,7 +58,7 @@ namespace SkillTrackerLambda.Controllers
             try
             {
                 _logger.LogInformation("Invoking update-profile method");
-                var profile = await _profileService.GetAsync("Id", id);
+                var profile = await _profileService.GetAsync("id", id);
 
                 if (profile is null || !profile.Any())
                 {
@@ -67,7 +66,7 @@ namespace SkillTrackerLambda.Controllers
                     return NotFound();
                 }
 
-                newProfile.Id = profile.FirstOrDefault().Id;
+                newProfile.id = profile.FirstOrDefault().id;
 
                 await _profileService.UpdateAsync(id, newProfile);
                 _logger.LogInformation("Updated Profile Successfully");

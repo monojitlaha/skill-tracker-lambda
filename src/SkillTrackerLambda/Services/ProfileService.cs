@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SkillTrackerLambda.DTO;
+using SkillTrackerLambda.Models;
 using SkillTrackerLambda.Repository;
 
 namespace SkillTrackerLambda.Services

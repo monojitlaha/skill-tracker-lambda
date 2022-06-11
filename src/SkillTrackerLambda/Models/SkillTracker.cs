@@ -4,30 +4,24 @@ namespace SkillTrackerLambda.Models
 {
     // SkillTracker myDeserializedClass = JsonConvert.DeserializeObject<SkillTracker>(myJsonResponse);
 
-    public class SkillTracker
+    public class Profile
     {
-        public int id { get; set; }
-        public string value { get; set; }
+        public string id { get; set; }
         public string name { get; set; }
         public string associateId { get; set; }
         public string email { get; set; }
         public string mobile { get; set; }
-        public List<TechnicalSkill> technicalSkills { get; set; }
-        public List<CommunicationSkill> communicationSkills { get; set; }
+        public List<Skill> technicalSkills { get; set; }
+        public List<Skill> communicationSkills { get; set; }
 
-        public SkillTracker()
+        public Profile()
         {
-            technicalSkills = new List<TechnicalSkill>();
-            communicationSkills = new List<CommunicationSkill>();
+            technicalSkills = new List<Skill>();
+            communicationSkills = new List<Skill>();
         }
     }
 
-    public class TechnicalSkill
-    {
-        public string description { get; set; }
-        public string rating { get; set; }
-    }
-    public class CommunicationSkill
+    public class Skill
     {
         public string description { get; set; }
         public string rating { get; set; }
