@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using SkillTrackerLambda.Models;
+using SkillTrackerLambda.DTO;
 using SkillTrackerLambda.Services;
 
 namespace SkillTrackerLambda.Controllers

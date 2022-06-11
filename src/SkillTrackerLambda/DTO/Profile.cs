@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SkillTrackerLambda.Models
+namespace SkillTrackerLambda.DTO
 {
     public class Profile
     {

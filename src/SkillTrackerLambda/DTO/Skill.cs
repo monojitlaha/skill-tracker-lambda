@@ -1,4 +1,4 @@
-﻿namespace SkillTrackerLambda.Models
+﻿namespace SkillTrackerLambda.DTO
 {
     public class Skill
     {

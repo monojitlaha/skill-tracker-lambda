@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SkillTrackerLambda.Models;
+using SkillTrackerLambda.DTO;
 
 namespace SkillTrackerLambda.Services
 {
