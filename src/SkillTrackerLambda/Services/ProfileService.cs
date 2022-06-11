@@ -8,9 +8,9 @@ namespace SkillTrackerLambda.Services
 {
     public class ProfileService : IProfileService
     {
-        private readonly IProfileRepository _profileRepository;
+        private readonly IDynamoDBClient _profileRepository;
 
-        public ProfileService(IProfileRepository profileRepository)
+        public ProfileService(IDynamoDBClient profileRepository)
         {
             _profileRepository = profileRepository;
         }

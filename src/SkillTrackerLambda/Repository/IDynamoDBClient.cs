@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SkillTrackerLambda.Repository
 {
-    public interface IProfileRepository
+    public interface IDynamoDBClient
     {
     }
 }

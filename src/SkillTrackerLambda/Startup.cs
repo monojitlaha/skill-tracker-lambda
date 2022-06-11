@@ -31,7 +31,7 @@ namespace SkillTrackerLambda
                 builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
             }));
 
-            services.AddSingleton<IProfileRepository, ProfileRepository>();
+            services.AddSingleton<IDynamoDBClient, ProfileRepository>();
             services.AddSingleton<IProfileService, ProfileService>();
 
             services.AddSwaggerGen(options =>
