@@ -66,7 +66,7 @@ namespace SkillTrackerLambda.Controllers
                     return NotFound();
                 }
 
-                //newProfile.Id = book.FirstOrDefault().Id;
+                newProfile.Id = book.FirstOrDefault().Id;
 
                 await _profileService.UpdateAsync(id, newProfile);
                 _logger.LogInformation("Updated Profile Successfully");
