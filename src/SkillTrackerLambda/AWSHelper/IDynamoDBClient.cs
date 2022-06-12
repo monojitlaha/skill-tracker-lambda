@@ -9,7 +9,10 @@ namespace SkillTrackerLambda.Repository
 {
     public interface IDynamoDBClient
     {
-        Task<List<Profile>> GetAsync();
-        Task<List<Profile>> GetWithScanConditionAsync(ScanCondition condition);
+        Task<List<Profile>> GetAsync(List<ScanCondition> conditionsn);
+
+        Task<bool> DeleteAsync(Profile profile);
+
+        Task<bool> SaveAsync(Profile profile);
     }
 }

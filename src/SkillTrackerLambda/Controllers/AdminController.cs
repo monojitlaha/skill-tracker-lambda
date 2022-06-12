@@ -28,7 +28,7 @@ namespace SkillTrackerLambda.Controllers
             try
             {
                 _logger.LogInformation("Invoking GET method");
-                var result = await _profileService.GetAsync();
+                var result = await _profileService.GetAllAsync();
                 if (result == null || !result.Any())
                     return NotFound();
                 _logger.LogInformation("Receieved Search Result Successfully");

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
@@ -16,68 +17,55 @@ namespace SkillTrackerLambda.Services
             _dynamoDBClient = dynamoDBClient;
         }
 
-        public Task CreateAsync(Profile profile)
+        public Task<List<Profile>> GetAllAsync()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<List<Profile>> GetAsync()
-        {
-            return _dynamoDBClient.GetAsync();
+            return _dynamoDBClient.GetAsync(new List<ScanCondition>());
         }
 
         public async Task<List<Profile>> GetAsync(string criteria, string criteriaValue)
         {
-            ScanCondition condition = null;
-            if (criteria.Trim().ToLower() == "name")
+            List<ScanCondition> scanConditions = new List<ScanCondition>();
+
+            switch (criteria)
             {
-                condition = new ScanCondition("name", ScanOperator.Equal, criteriaValue);
+
+                case "associateId":
+                    scanConditions.Add(new ScanCondition("associateId", ScanOperator.Equal, criteriaValue));
+                    break;
+                case "email":
+                    scanConditions.Add(new ScanCondition("email", ScanOperator.Equal, criteriaValue));
+                    break;
+                case "mobile":
+                    scanConditions.Add(new ScanCondition("mobile", ScanOperator.Equal, criteriaValue));
+                    break;
+                case "name":
+                    scanConditions.Add(new ScanCondition("name", ScanOperator.Equal, criteriaValue));
+                    break;
+                default:
+                    scanConditions.Add(new ScanCondition("id", ScanOperator.Equal, criteriaValue));
+                    break;
             }
-            else if (criteria.Trim().ToLower() == "username")
-            {
-                condition = new ScanCondition("username", ScanOperator.Equal, criteriaValue);
-            }
-            else if (criteria.Trim().ToLower() == "associateid")
-            {
-                condition = new ScanCondition("associateid", ScanOperator.Equal, criteriaValue);
-            }
-            else if (criteria.Trim().ToLower() == "email")
-            {
-                condition = new ScanCondition("email", ScanOperator.Equal, criteriaValue);
-            }
-            else if (criteria.Trim().ToLower() == "mobile")
-            {
-                condition = new ScanCondition("mobile", ScanOperator.Equal, criteriaValue);
-            }
-            //else if (criteria.Trim().ToLower() == "skill")
-            //{
-            //    condition = new ScanCondition("technicalSkills.Description", ScanOperator.Contains, criteriaValue);
-            //}
-            else
-            {
-                condition = new ScanCondition("id", ScanOperator.Equal, criteriaValue);
-            }
-            return await _dynamoDBClient.GetWithScanConditionAsync(condition); 
+
+            return await _dynamoDBClient.GetAsync(scanConditions);
         }
 
-        public Task RemoveAsync(string id)
+        public async Task<bool> RemoveAsync(string id)
         {
-            throw new System.NotImplementedException();
+            return await _dynamoDBClient.DeleteAsync(new Profile { id = id });
         }
 
-        public Task UpdateAsync(string id, Profile profile)
+        public async Task<bool> UpdateAsync(string id, Profile profile)
         {
-            throw new System.NotImplementedException();
-        } 
+            profile.id = id;
+            return await _dynamoDBClient.SaveAsync(profile);
+        }
 
-        //public async Task CreateAsync(Profile profile) =>
-        // await _profiles.InsertOneAsync(profile);
+        public async Task<bool> CreateAsync(Profile profile)
+        {
+            profile.id = Guid.NewGuid().ToString();
+            return await _dynamoDBClient.SaveAsync(profile);
+        }
 
-        //public async Task UpdateAsync(string id, Profile profile) =>
-        // await _profiles.ReplaceOneAsync(x => x.Id == id, profile);
-
-        //public async Task RemoveAsync(string id) =>
-        // await _profiles.DeleteOneAsync(x => x.Id == id);
     }
 }
 
