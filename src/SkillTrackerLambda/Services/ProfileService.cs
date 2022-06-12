@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using SkillTrackerLambda.Models;
 using SkillTrackerLambda.Repository;
 
@@ -21,12 +23,41 @@ namespace SkillTrackerLambda.Services
 
         public Task<List<Profile>> GetAsync()
         {
-            throw new System.NotImplementedException();
+            return _dynamoDBClient.GetAsync();
         }
 
-        public Task<List<Profile>> GetAsync(string criteria, string criteriaValue)
+        public async Task<List<Profile>> GetAsync(string criteria, string criteriaValue)
         {
-            throw new System.NotImplementedException();
+            ScanCondition condition = null;
+            if (criteria.Trim().ToLower() == "name")
+            {
+                condition = new ScanCondition("name", ScanOperator.Equal, criteriaValue);
+            }
+            else if (criteria.Trim().ToLower() == "username")
+            {
+                condition = new ScanCondition("username", ScanOperator.Equal, criteriaValue);
+            }
+            else if (criteria.Trim().ToLower() == "associateid")
+            {
+                condition = new ScanCondition("associateid", ScanOperator.Equal, criteriaValue);
+            }
+            else if (criteria.Trim().ToLower() == "email")
+            {
+                condition = new ScanCondition("email", ScanOperator.Equal, criteriaValue);
+            }
+            else if (criteria.Trim().ToLower() == "mobile")
+            {
+                condition = new ScanCondition("mobile", ScanOperator.Equal, criteriaValue);
+            }
+            //else if (criteria.Trim().ToLower() == "skill")
+            //{
+            //    condition = new ScanCondition("technicalSkills.Description", ScanOperator.Contains, criteriaValue);
+            //}
+            else
+            {
+                condition = new ScanCondition("id", ScanOperator.Equal, criteriaValue);
+            }
+            return await _dynamoDBClient.GetWithScanConditionAsync(condition); 
         }
 
         public Task RemoveAsync(string id)
@@ -37,53 +68,7 @@ namespace SkillTrackerLambda.Services
         public Task UpdateAsync(string id, Profile profile)
         {
             throw new System.NotImplementedException();
-        }
-
-        //public async Task<List<Profile>> GetAsync() =>
-        // await _profiles.Find(Builders<Profile>.Filter.Empty, null).ToListAsync();
-
-        //public async Task<List<Profile>> GetAsync(string criteria, string criteriaValue)
-        //{
-        //    FilterDefinition<Profile> filter;
-        //    if (criteria.Trim().ToLower() == "name")
-        //    {
-        //        var escapeInput = Regex.Escape(criteriaValue);
-        //        var regx = new Regex(escapeInput, RegexOptions.IgnoreCase);
-        //        filter = Builders<Profile>.Filter.Regex("Name", BsonRegularExpression.Create(regx));
-        //    }
-        //    else if (criteria.Trim().ToLower() == "username")
-        //    {
-        //        filter = Builders<Profile>.Filter.Eq("UserName", criteriaValue);
-        //    }
-        //    else if (criteria.Trim().ToLower() == "associateid")
-        //    {
-        //        filter = Builders<Profile>.Filter.Eq("AssociateId", criteriaValue);
-        //    }
-        //    else if (criteria.Trim().ToLower() == "email")
-        //    {
-        //        filter = Builders<Profile>.Filter.Eq("Email", criteriaValue);
-        //    }
-        //    else if (criteria.Trim().ToLower() == "mobile")
-        //    {
-        //        filter = Builders<Profile>.Filter.Eq("Mobile", criteriaValue);
-        //    }
-        //    else if (criteria.Trim().ToLower() == "skill")
-        //    {
-        //        var techSkillsFilter = Builders<Profile>.Filter.ElemMatch(
-        //                x => x.TechnicalSkills,
-        //                y => y.Description.ToLower() == criteriaValue.ToLower());
-        //        var commSkillsFilter = Builders<Profile>.Filter.ElemMatch(
-        //                x => x.CommunicationSkills,
-        //                y => y.Description.ToLower() == criteriaValue.ToLower());
-        //        filter = Builders<Profile>.Filter.Or(techSkillsFilter, commSkillsFilter); 
-        //    }
-        //    else
-        //    {
-        //        var objectId = new ObjectId(criteriaValue);
-        //        filter = Builders<Profile>.Filter.Eq("_id", objectId);
-        //    }
-        //    return await _profiles.FindAsync(filter).Result.ToListAsync();
-        //}
+        } 
 
         //public async Task CreateAsync(Profile profile) =>
         // await _profiles.InsertOneAsync(profile);

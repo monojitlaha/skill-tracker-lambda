@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using SkillTrackerLambda.Models;
 using SkillTrackerLambda.Services;
@@ -56,15 +55,8 @@ namespace SkillTrackerLambda.Controllers
             {
                 _logger.LogInformation("Invoking GET method by passing Search Criteria");
                 var profiles = await _profileService.GetAsync(criteria, criteriaValue);
-                var cacheExpirationOptions = new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpiration = DateTime.Now.AddHours(6),
-                    Priority = CacheItemPriority.Normal,
-                    SlidingExpiration = TimeSpan.FromMinutes(5)
-                };
 
                 _logger.LogInformation("Receieved Search Result Successfully");
-
                 return Ok(profiles);
             }
             catch (Exception ex)

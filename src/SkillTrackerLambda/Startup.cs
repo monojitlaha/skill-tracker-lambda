@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using SkillTrackerLambda.Services;
 using SkillTrackerLambda.Repository;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2;
 
 namespace SkillTrackerLambda
 {
@@ -31,6 +33,8 @@ namespace SkillTrackerLambda
                 builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
             }));
 
+            services.AddSingleton<IDynamoDBContext, DynamoDBContext>(p => 
+                                new DynamoDBContext(new AmazonDynamoDBClient()));
             services.AddSingleton<IDynamoDBClient, DynamoDBClient>();
             services.AddSingleton<IProfileService, ProfileService>();
 
