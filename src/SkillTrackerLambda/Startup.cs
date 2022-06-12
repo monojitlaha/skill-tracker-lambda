@@ -24,8 +24,8 @@ namespace SkillTrackerLambda
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddControllers();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddControllers();
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
             services.AddSingleton(Configuration);
 
             services.AddCors(options => options.AddPolicy("SkillTracker", builder =>
@@ -39,7 +39,7 @@ namespace SkillTrackerLambda
             services.AddSingleton<IProfileService, ProfileService>();
 
             services.AddHttpContextAccessor();
-            services.AddMvcCore(options => options.EnableEndpointRouting = false);
+            //services.AddMvcCore(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,7 +56,12 @@ namespace SkillTrackerLambda
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+            //app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
