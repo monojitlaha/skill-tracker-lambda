@@ -26,11 +26,13 @@ namespace SkillTrackerLambda.Services
         {
             List<ScanCondition> scanConditions = new List<ScanCondition>();
 
-            switch (criteria)
+            switch (criteria.Trim().ToLower())
             {
-
-                case "associateId":
-                    scanConditions.Add(new ScanCondition("associateId", ScanOperator.Equal, criteriaValue));
+                case "username":
+                    scanConditions.Add(new ScanCondition("username", ScanOperator.Equal, criteriaValue));
+                    break;
+                case "associateid":
+                    scanConditions.Add(new ScanCondition("associateid", ScanOperator.Equal, criteriaValue));
                     break;
                 case "email":
                     scanConditions.Add(new ScanCondition("email", ScanOperator.Equal, criteriaValue));
