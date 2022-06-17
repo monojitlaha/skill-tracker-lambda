@@ -45,7 +45,7 @@ namespace SkillTrackerLambda.Controllers
             }
         }
 
-        [HttpPut("{id:length(24)}")]
+        [HttpPut("{id}")]
         [ActionName("update-profile")]
         public async Task<ActionResult> Update(string id, Profile newProfile)
         {
